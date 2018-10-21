@@ -3,7 +3,6 @@
 const pkginfo = require('../../package.json');
 const spec = require('../spec');
 
-
 /**
  * @swagger
  * /:
@@ -17,6 +16,7 @@ const spec = require('../spec');
  *         description: Describe general API information
  */
 exports.getApiInfo = ctx => {
+  console.log(ctx.models.User);
   // BUSINESS LOGIC
   const data = {
     name: pkginfo.name,

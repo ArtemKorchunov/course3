@@ -4,7 +4,6 @@
 
 // Load APM on production environment
 const config = require('./config');
-const apm = require('./apm');
 
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
@@ -14,8 +13,9 @@ const logMiddleware = require('./middlewares/log');
 const logger = require('./logger');
 const requestId = require('./middlewares/requestId');
 const responseHandler = require('./middlewares/responseHandler');
-const router = require('./routes');
-
+const router = require('./routes/general');
+const models = require('./models');
+const CSRF = require('koa-csrf');
 
 const app = new Koa();
 
@@ -30,6 +30,18 @@ app.use(
     jsonLimit: '10mb'
   })
 );
+// add the CSRF middleware
+app.use(
+  new CSRF({
+    invalidSessionSecretMessage: 'Invalid session secret',
+    invalidSessionSecretStatusCode: 403,
+    invalidTokenMessage: 'Invalid CSRF token',
+    invalidTokenStatusCode: 403,
+    excludedMethods: ['GET', 'HEAD', 'OPTIONS'],
+    disableQuery: false
+  })
+);
+
 app.use(requestId());
 app.use(
   cors({
@@ -43,23 +55,26 @@ app.use(errorHandler());
 app.use(logMiddleware({ logger }));
 
 // Bootstrap application router
+
 app.use(router.routes());
 app.use(router.allowedMethods());
 
+app.context.models = models;
+
 function onError(err, ctx) {
-  if (apm.active)
-    apm.captureError(err);
   if (ctx == null)
     logger.error({ err, event: 'error' }, 'Unhandled exception occured');
 }
 
 // Handle uncaught errors
 app.on('error', onError);
-
 // Start server
 if (!module.parent) {
-  const server = app.listen(config.port, config.host, () => {
-    logger.info({ event: 'execute' }, `API server listening on ${config.host}:${config.port}, in ${config.env}`);
+  const server = app.listen(config.port, () => {
+    logger.info(
+      { event: 'execute' },
+      `API server listening on ${config.host}:${config.port}, in ${config.env}`
+    );
   });
   server.on('error', onError);
 }
