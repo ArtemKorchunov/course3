@@ -8,16 +8,20 @@ const config = require('./config');
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const cors = require('@koa/cors');
+
 const errorHandler = require('./middlewares/errorHandler');
 const logMiddleware = require('./middlewares/log');
 const logger = require('./logger');
 const requestId = require('./middlewares/requestId');
 const responseHandler = require('./middlewares/responseHandler');
+
+const oauth = require('./routes/oauth');
 const router = require('./routes/general');
+
 const models = require('./models');
-const CSRF = require('koa-csrf');
 
 const app = new Koa();
+require('koa-validate')(app);
 
 // Trust proxy
 app.proxy = true;
@@ -25,20 +29,9 @@ app.proxy = true;
 // Set middlewares
 app.use(
   bodyParser({
-    enableTypes: ['json', 'form'],
+    enableTypes: ['json', 'form', 'application/json'],
     formLimit: '10mb',
     jsonLimit: '10mb'
-  })
-);
-// add the CSRF middleware
-app.use(
-  new CSRF({
-    invalidSessionSecretMessage: 'Invalid session secret',
-    invalidSessionSecretStatusCode: 403,
-    invalidTokenMessage: 'Invalid CSRF token',
-    invalidTokenStatusCode: 403,
-    excludedMethods: ['GET', 'HEAD', 'OPTIONS'],
-    disableQuery: false
   })
 );
 
@@ -56,6 +49,7 @@ app.use(logMiddleware({ logger }));
 
 // Bootstrap application router
 
+app.use(oauth.routes());
 app.use(router.routes());
 app.use(router.allowedMethods());
 
