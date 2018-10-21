@@ -7,7 +7,7 @@
 </div>
 
 <p align="center">
-  Boilerplate for Node.js Koa RESTful API application with Docker, Swagger, Jest, Coveralls, and Circle CI
+  Project for Node.js Koa RESTful API application with Docker, Swagger, Jest, Coveralls, and Circle CI
 </p>
 
 <div align="center">
