@@ -3,7 +3,7 @@
     <img alt="Koa REST API Boilerplate" src="http://crocodillon.com/images/blog/2015/asynchronous-callbacks-in-koa--twitter.png" width="240px" />
   </a>
   <br />
-  <h1>Koa REST API Boilerplate</h1>
+  <h1>Koa REST API</h1>
 </div>
 
 <p align="center">
@@ -30,9 +30,9 @@
 
 <br />
 
-**Koa REST API Boilerplate** is a highly opinionated boilerplate template for building RESTful API application with Koa.
+**Koa REST API project** is a highly opinionated boilerplate template for building RESTful API application with Koa.
 
-This boilerplate include the following features:
+This profject include the following features:
 
 - Log rotation and log management using [Bunyan](https://github.com/trentm/node-bunyan)
 - A super small and optimized [Docker](https://www.docker.com/) image based on Alpine image
@@ -46,7 +46,7 @@ This boilerplate include the following features:
 ## Getting Started
 
 ```zsh
-$ git clone https://github.com/posquit0/koa-rest-api-boilerplate your-project-name
+$ git clone https://github.com/posquit0/koa-rest-api-boilerplate
 $ cd your-project-name
 $ rm -rf .git && git init
 ```
@@ -95,23 +95,6 @@ $ yarn lint:test                      # Lint test sourcecode
 $ yarn pack
 ```
 
-
-## Contributing
-
-This project follows the [**Contributor Covenant**](http://contributor-covenant.org/version/1/4/) Code of Conduct.
-
-#### Bug Reports & Feature Requests
-
-Please use the [issue tracker](https://github.com/posquit0/koa-rest-api-boilerplate/issues) to report any bugs or ask feature requests.
-
-
-## Contact
-
-If you have any questions, feel free to join me at [`#posquit0` on Freenode](irc://irc.freenode.net/posquit0) and ask away. Click [here](https://kiwiirc.com/client/irc.freenode.net/posquit0) to connect.
-
-
 ## License
 
 Provided under the terms of the [MIT License](https://github.com/posquit0/koa-rest-api-boilerplate/blob/master/LICENSE).
-
-Copyright © 2018, [Byungjin Park](http://www.posquit0.com).
