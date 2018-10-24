@@ -1,4 +1,5 @@
 'use strict';
+const bcrypt = require('bcrypt');
 const hash = require('../util').hash;
 
 module.exports = (sequelize, DataTypes) => {
@@ -18,14 +19,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       hooks: {
-        beforeCreate: async (user, options) => {
+        beforeCreate: async user => {
           user.password = await hash(user.password.toString());
         }
       }
     }
   );
-  User.associate = function (models) {
-    // associations can be defined here
+  User.prototype.checkPassword = function (other_pass) {
+    return bcrypt.compareSync(other_pass, this.password);
   };
   return User;
 };

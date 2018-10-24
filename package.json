@@ -33,6 +33,9 @@
   "scripts": {
     "start": "node app",
     "dev": "NODE_ENV=development nodemon --quiet | bunyan",
+    "migrate": "node_modules/.bin/sequelize db:migrate",
+    "undo:all": "node_modules/.bin/sequelize db:migrate:undo:all",
+    "seeds": "node_modules/.bin/sequelize db:seeds:all",
     "test": "NODE_ENV=test jest --forceExit --verbose",
     "test:unit": "npm test -- test/unit",
     "test:integration": "npm test -- test/integration",

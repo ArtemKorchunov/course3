@@ -6,19 +6,11 @@ module.exports = (sequelize, DataTypes) => {
       name: DataTypes.STRING,
       clientId: DataTypes.STRING,
       clientSecret: DataTypes.STRING,
-      isTrusted: DataTypes.BOOLEAN,
-      createdAt: {
-        type: DataTypes.DATE,
-        field: 'beginTime',
-        defaultValue: sequelize.literal('NOW()')
-      }
+      isTrusted: DataTypes.BOOLEAN
     },
     {
       timestamps: true
     }
   );
-  Client.associate = function (models) {
-    // associations can be defined here
-  };
   return Client;
 };

@@ -1,4 +1,7 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const config = require('../config');
 
 module.exports.hash = (password, saltRounds = 10) =>
   new Promise((resolve, reject) => {
@@ -7,3 +10,9 @@ module.exports.hash = (password, saltRounds = 10) =>
       resolve(hash);
     });
   });
+
+module.exports.jwt_sign = data => {
+  return jwt.sign(data, config.secret_jwt_key, {
+    expiresIn: config.jwt_expiration
+  });
+};
