@@ -3,10 +3,11 @@ const uuidv4 = require('uuid/v4');
 
 const jwt_sign = require('../util').jwt_sign;
 const config = require('../config');
+// TODO retrieve base validation logic to middlewear with koa joi
 class OAuth {
   constructor() {}
-
   async create(ctx) {
+    // Initial validation
     ctx.checkBody('email').isEmail('You enter not valid email !');
     ctx
       .checkBody('password')
@@ -24,6 +25,7 @@ class OAuth {
         message: 'Unprocessable entity!'
       });
     }
+    // Current logic
     try {
       await ctx.models.User.create(ctx.request.body);
     } catch ({ errors }) {
@@ -36,6 +38,7 @@ class OAuth {
   }
 
   async check(ctx) {
+    // Initial validation
     ctx.checkBody('email').isEmail('You enter not valid email !');
     ctx
       .checkBody('password')
@@ -47,6 +50,7 @@ class OAuth {
         message: 'Unprocessable entity!'
       });
     }
+    // Current logic
     try {
       const current_client = await ctx.models.Client.findOne({
         where: { name: config.client_name }
@@ -61,9 +65,15 @@ class OAuth {
       }
       if (user.checkPassword(ctx.request.body.password)) {
         let body = {};
+        const expiresIn = Math.floor(
+          (Date.now() + config.jwt_expiration_miliseconds) / 1000
+        );
         body.token = jwt_sign({
-          user_id: user.id,
-          client_id: current_client.id
+          data: {
+            user_id: user.id,
+            client_id: current_client.id
+          },
+          exp: expiresIn
         });
         body.refreshToken = uuidv4();
         await ctx.models.AccessToken.create({
@@ -74,7 +84,7 @@ class OAuth {
         return ctx.res.ok({
           data: {
             ...body,
-            expiresIn: Date.now() + config.jwt_expiration_miliseconds
+            expiresIn
           },
           message: 'Successfully loged in!'
         });
@@ -92,25 +102,31 @@ class OAuth {
   }
 
   async updateToken(ctx) {
-    ctx.checkBody('token').require();
-    ctx.checkBody('refreshToken').require();
+    // Initial validation
+    ctx.checkBody('token').notEmpty();
+    ctx.checkBody('refreshToken').notEmpty();
     if (ctx.errors) {
       return ctx.res.unprocessableEntity({
         data: ctx.errors,
         message: 'Unprocessable entity!'
       });
     }
-
+    // Current logic
     const { token: oldToken, refreshToken: oldRefreshToken } = ctx.request.body;
     try {
-      const decoded = jwt.verify(oldToken, config.secret_jwt_key);
+      const decoded = jwt.decode(oldToken);
       let body = {};
-      body.token = jwt_sign(decoded);
+      const expiresIn = Math.floor(
+        (Date.now() + config.jwt_expiration_miliseconds) / 1000
+      );
+      body.token = jwt_sign({
+        data: decoded.data,
+        exp: expiresIn
+      });
       body.refreshToken = uuidv4();
-      await ctx.models.AccessToken.update(
+      const token = await ctx.models.AccessToken.update(
         {
-          ...body,
-          ...decoded
+          ...body
         },
         {
           where: {
@@ -119,38 +135,52 @@ class OAuth {
           }
         }
       );
+      if (!token.pop()) throw new Error('This token is outdated!');
       return ctx.res.ok({
         data: {
           ...body,
-          expiresIn: Date.now() + config.jwt_expiration_miliseconds
+          expiresIn
         },
         message: 'Token successfully updated!'
       });
-    } catch ({ errors }) {
+    } catch ({ errors, message }) {
       return ctx.res.unprocessableEntity({
         data: {
-          token: ["Wrong token or it's already expired!"],
           ...errors
         },
-        message: 'Unprocessable entity!'
+        message: message || 'Unprocessable entity!'
       });
     }
   }
 
   async logout(ctx) {
-    ctx.checkBody('token').require();
+    // Initial validation
+    ctx.checkBody('token').notEmpty();
     if (ctx.errors) {
       return ctx.res.unprocessableEntity({
         data: ctx.errors,
         message: 'Unprocessable entity!'
       });
     }
-    await ctx.models.AccessToken.destroy({
-      where: { token: ctx.request.body.token }
-    });
-    return ctx.res.ok({
-      message: 'Logged out successfully!'
-    });
+    // Current logic
+    try {
+      const decoded = jwt.decode(ctx.request.token, config.secret_jwt_key);
+      if (!decoded) throw new Error('Token is not valid!');
+      const res = await ctx.models.AccessToken.destroy({
+        where: { token: ctx.request.body.token }
+      });
+      if (!res) throw new Error('Token is not exist!');
+      return ctx.res.ok({
+        message: 'Logged out successfully!'
+      });
+    } catch ({ errors, message }) {
+      return ctx.res.unprocessableEntity({
+        data: {
+          ...errors
+        },
+        message: message || 'Unprocessable entity!'
+      });
+    }
   }
 }
 

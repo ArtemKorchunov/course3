@@ -12,7 +12,5 @@ module.exports.hash = (password, saltRounds = 10) =>
   });
 
 module.exports.jwt_sign = data => {
-  return jwt.sign(data, config.secret_jwt_key, {
-    expiresIn: config.jwt_expiration
-  });
+  return jwt.sign(data, config.secret_jwt_key);
 };
