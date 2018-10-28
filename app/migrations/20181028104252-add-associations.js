@@ -3,59 +3,46 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface
-      .addColumn(
-        'AccessToken', // name of Source model
-        'client_id', // name of the key we're adding
-        {
-          type: Sequelize.INTEGER,
-          references: {
-            model: 'Client', // name of Target model
-            key: 'id' // key in Target model that we're referencing
-          },
-          onUpdate: 'CASCADE',
-          onDelete: 'SET NULL'
-        }
-      )
+      .addColumn('AccessTokens', 'client_id', {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Clients',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
+      })
       .then(() => {
-        return queryInterface.addColumn('AccessToken', 'user_id', {
+        return queryInterface.addColumn('AccessTokens', 'user_id', {
           type: Sequelize.INTEGER,
           references: {
-            model: 'User', // name of Target model
-            key: 'id' // key in Target model that we're referencing
+            model: 'Users',
+            key: 'id'
           },
           onUpdate: 'CASCADE',
           onDelete: 'SET NULL'
         });
       })
       .then(() => {
-        return queryInterface.addColumn('Device', 'user_id', {
+        return queryInterface.addColumn('Devices', 'user_id', {
           type: Sequelize.INTEGER,
           references: {
-            model: 'User', // name of Target model
-            key: 'id' // key in Target model that we're referencing
+            model: 'Users',
+            key: 'id'
           },
           onUpdate: 'CASCADE',
           onDelete: 'SET NULL'
         });
       });
   },
-  down: (queryInterface, Sequelize) => {
+  down: queryInterface => {
     return queryInterface
-      .removeColumn(
-        'AccessToken', // name of Source model
-        'client_id' // key we want to remove
-      )
+      .removeColumn('AccessTokens', 'client_id')
       .then(() => {
-        return queryInterface.removeColumn(
-          'AccessToken', // name of Source model
-          'user_id' // key we want to remove
-        );
+        return queryInterface.removeColumn('AccessTokens', 'user_id');
       })
       .then(() => {
-        return queryInterface.removeColumn(
-          'Device', // name of Source model
-          'user_id' // key we want to remove
-        );
+        return queryInterface.removeColumn('Devices', 'user_id');
       });
   }
 };

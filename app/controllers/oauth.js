@@ -164,12 +164,14 @@ class OAuth {
     }
     // Current logic
     try {
-      const decoded = jwt.decode(ctx.request.token, config.secret_jwt_key);
+      const decoded = jwt.decode(ctx.request.body.token);
       if (!decoded) throw new Error('Token is not valid!');
+
       const res = await ctx.models.AccessToken.destroy({
         where: { token: ctx.request.body.token }
       });
       if (!res) throw new Error('Token is not exist!');
+
       return ctx.res.ok({
         message: 'Logged out successfully!'
       });

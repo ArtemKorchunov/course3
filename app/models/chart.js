@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   Chart.associate = function (models) {
     Chart.belongsToMany(models.Device, {
-      through: 'DeviceChart',
+      through: 'DeviceCharts',
       foreignKey: 'chart_id'
     });
   };

@@ -3,7 +3,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     // Device belongsToMany Chart
-    return queryInterface.createTable('DeviceChart', {
+    return queryInterface.createTable('DeviceCharts', {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -23,8 +23,8 @@ module.exports = {
     });
   },
 
-  down: (queryInterface, Sequelize) => {
+  down: queryInterface => {
     // remove table
-    return queryInterface.dropTable('DeviceChart');
+    return queryInterface.dropTable('DeviceCharts');
   }
 };

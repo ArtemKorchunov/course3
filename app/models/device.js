@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   Device.associate = function (models) {
-    Device.belongsToMany(models.ChartType, {
-      through: 'DeviceChart',
+    Device.belongsToMany(models.Chart, {
+      through: 'DeviceCharts',
       foreignKey: 'device_id'
     });
   };

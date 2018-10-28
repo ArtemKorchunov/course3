@@ -10,6 +10,10 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING
+      },
+      references: {
+        model: 'Device', // name of Target model
+        key: 'id' // key in Target model that we're referencing
       }
     });
   },
