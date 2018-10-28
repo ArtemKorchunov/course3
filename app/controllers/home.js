@@ -16,7 +16,6 @@ const spec = require('../spec');
  *         description: Describe general API information
  */
 exports.getApiInfo = ctx => {
-  console.log(ctx);
   // BUSINESS LOGIC
   const data = {
     name: pkginfo.name,

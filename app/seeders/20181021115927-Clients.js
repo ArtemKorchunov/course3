@@ -1,7 +1,7 @@
 'use strict';
 const client_name = require('../config').client_name;
 module.exports = {
-  up: (queryInterface, Sequelize) => {
+  up: queryInterface => {
     return queryInterface.bulkInsert(
       'Clients',
       [
@@ -18,7 +18,7 @@ module.exports = {
     );
   },
 
-  down: (queryInterface, Sequelize) => {
+  down: queryInterface => {
     return queryInterface.bulkDelete('Clients', null, {});
   }
 };

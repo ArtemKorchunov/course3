@@ -12,12 +12,12 @@ module.exports = {
         type: Sequelize.STRING
       },
       references: {
-        model: 'Device', // name of Target model
-        key: 'id' // key in Target model that we're referencing
+        model: 'Device',
+        key: 'id'
       }
     });
   },
-  down: (queryInterface, Sequelize) => {
+  down: queryInterface => {
     return queryInterface.dropTable('Charts');
   }
 };
