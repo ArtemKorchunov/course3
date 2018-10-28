@@ -2,13 +2,13 @@
 
 const Router = require('koa-router');
 const OAuth = require('../controllers/oauth');
-const validateBody = require('../middlewares/validation');
+const validate = require('../middlewares/validation');
 
 const router = new Router({ prefix: '/oauth' });
 
 router.post(
   '/token',
-  validateBody(ctx => {
+  validate(ctx => {
     ctx.checkBody('email').isEmail('You enter not valid email !');
     ctx
       .checkBody('password')
@@ -25,7 +25,7 @@ router.post(
 
 router.post(
   '/login',
-  validateBody(ctx => {
+  validate(ctx => {
     ctx.checkBody('email').isEmail('You enter not valid email !');
     ctx
       .checkBody('password')
@@ -38,7 +38,7 @@ router.post(
 
 router.put(
   '/token',
-  validateBody(ctx => {
+  validate(ctx => {
     ctx.checkBody('token').notEmpty();
     ctx.checkBody('refreshToken').notEmpty();
   }),
@@ -47,8 +47,8 @@ router.put(
 
 router.post(
   '/logout',
-  validateBody(ctx => {
-    ctx.checkBody('token').notEmpty();
+  validate(ctx => {
+    ctx.checkHeader('token').notEmpty();
   }),
   OAuth.logout
 );

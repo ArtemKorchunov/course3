@@ -4,7 +4,10 @@ module.exports = (sequelize, DataTypes) => {
     'Client',
     {
       name: DataTypes.STRING,
-      clientId: DataTypes.STRING,
+      clientId: {
+        type: DataTypes.STRING,
+        unique: true
+      },
       clientSecret: DataTypes.STRING,
       isTrusted: DataTypes.BOOLEAN
     },

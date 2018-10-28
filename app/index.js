@@ -8,6 +8,7 @@ const config = require('./config');
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const cors = require('@koa/cors');
+const jwt = require('koa-jwt');
 
 const errorHandler = require('./middlewares/errorHandler');
 const logMiddleware = require('./middlewares/log');
@@ -25,6 +26,10 @@ require('koa-validate')(app);
 
 // Trust proxy
 app.proxy = true;
+
+// Middleware below this line is only reached if JWT token is valid
+// unless the URL starts with '/public'
+app.use(jwt({ secret: config.secret_jwt_key }).unless({ path: [/^\/oauth/] }));
 
 // Set middlewares
 app.use(

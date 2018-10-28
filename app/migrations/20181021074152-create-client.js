@@ -12,7 +12,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       clientId: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       clientSecret: {
         type: Sequelize.STRING

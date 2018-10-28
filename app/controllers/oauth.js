@@ -119,7 +119,7 @@ class OAuth {
   async logout(ctx) {
     // Current logic
     try {
-      const decoded = jwt.decode(ctx.request.body.token);
+      const decoded = jwt.decode(ctx.request.headers.token);
       if (!decoded) throw new Error('Token is not valid!');
 
       const res = await ctx.models.AccessToken.destroy({
