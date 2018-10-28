@@ -17,7 +17,7 @@ const responseHandler = require('./middlewares/responseHandler');
 
 const oauth = require('./routes/oauth');
 const router = require('./routes/general');
-
+const device = require('./routes/device');
 const models = require('./models');
 
 const app = new Koa();
@@ -50,6 +50,7 @@ app.use(logMiddleware({ logger }));
 
 // Bootstrap application router
 
+app.use(device.routes());
 app.use(oauth.routes());
 app.use(router.routes());
 app.use(router.allowedMethods());

@@ -3,34 +3,18 @@ const uuidv4 = require('uuid/v4');
 
 const jwt_sign = require('../util').jwt_sign;
 const config = require('../config');
-// TODO retrieve base validation logic to middlewear with koa joi
 class OAuth {
   constructor() {}
   async create(ctx) {
-    // Initial validation
-    ctx.checkBody('email').isEmail('You enter not valid email !');
-    ctx
-      .checkBody('password')
-      .notEmpty()
-      .len(3, 20);
-    ctx
-      .checkBody('name')
-      .optional()
-      .empty()
-      .len(3, 20);
-
-    if (ctx.errors) {
-      return ctx.res.unprocessableEntity({
-        data: ctx.errors,
-        message: 'Unprocessable entity!'
-      });
-    }
     // Current logic
     try {
       await ctx.models.User.create(ctx.request.body);
     } catch ({ errors }) {
       return ctx.res.unprocessableEntity({
-        data: errors,
+        data: errors.reduce(
+          (prevItem, item) => ({ ...prevItem, [item.path]: item.message }),
+          {}
+        ),
         message: 'Unprocessable entity!'
       });
     }
@@ -38,18 +22,6 @@ class OAuth {
   }
 
   async check(ctx) {
-    // Initial validation
-    ctx.checkBody('email').isEmail('You enter not valid email !');
-    ctx
-      .checkBody('password')
-      .notEmpty()
-      .len(3, 20);
-    if (ctx.errors) {
-      return ctx.res.unprocessableEntity({
-        data: ctx.errors,
-        message: 'Unprocessable entity!'
-      });
-    }
     // Current logic
     try {
       const current_client = await ctx.models.Client.findOne({
@@ -102,15 +74,6 @@ class OAuth {
   }
 
   async updateToken(ctx) {
-    // Initial validation
-    ctx.checkBody('token').notEmpty();
-    ctx.checkBody('refreshToken').notEmpty();
-    if (ctx.errors) {
-      return ctx.res.unprocessableEntity({
-        data: ctx.errors,
-        message: 'Unprocessable entity!'
-      });
-    }
     // Current logic
     const { token: oldToken, refreshToken: oldRefreshToken } = ctx.request.body;
     try {
@@ -154,14 +117,6 @@ class OAuth {
   }
 
   async logout(ctx) {
-    // Initial validation
-    ctx.checkBody('token').notEmpty();
-    if (ctx.errors) {
-      return ctx.res.unprocessableEntity({
-        data: ctx.errors,
-        message: 'Unprocessable entity!'
-      });
-    }
     // Current logic
     try {
       const decoded = jwt.decode(ctx.request.body.token);
