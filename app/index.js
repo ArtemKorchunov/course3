@@ -31,7 +31,8 @@ app.use(
   bodyParser({
     enableTypes: ['json', 'form', 'application/json'],
     formLimit: '10mb',
-    jsonLimit: '10mb'
+    jsonLimit: '10mb',
+    multipart: true
   })
 );
 
