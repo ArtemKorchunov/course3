@@ -881,7 +881,7 @@ co-use@^1.1.0:
   resolved "https://registry.yarnpkg.com/co-use/-/co-use-1.1.0.tgz#c6bb3cdf10cb735ecaa9daeeda46d725c94a4e62"
   integrity sha1-xrs83xDLc17Kqdru2kbXJclKTmI=
 
-co@^4.6.0:
+co@^4.4.0, co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
   integrity sha1-bqa989hTrlTMuOR7+gvz+QMfsYQ=
@@ -3265,7 +3265,7 @@ koa-compose@^3.0.0:
   dependencies:
     any-promise "^1.1.0"
 
-koa-compose@^4.1.0:
+koa-compose@^4.0.0, koa-compose@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/koa-compose/-/koa-compose-4.1.0.tgz#507306b9371901db41121c812e923d0d67d3e877"
   integrity sha512-8ODW8TrDuMYvXRwra/Kh7/rJo9BtOfPc6qO8eAfC80CnCvSjSl0bkRM24X6/XBBEyj0v1nRUQ1LyOy3dbqOWXw==
@@ -3316,6 +3316,16 @@ koa-validate@^1.0.7:
   dependencies:
     json-path "^0.1.3"
     validator "^5.2.0"
+
+koa-websocket@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/koa-websocket/-/koa-websocket-5.0.1.tgz#41413361a0730b886ec3b070e43d78449c8da12b"
+  integrity sha512-NRfUdC1fGH9P45lOEygdPxdrJZ1aHoB9Kcn06WST/g4NtqIggH+ZzfATMeDpF0unjsvwVzxjNJoHIRIP9wY7gg==
+  dependencies:
+    co "^4.4.0"
+    debug "^3.1.0"
+    koa-compose "^4.0.0"
+    ws "^5.2.0"
 
 koa@^2.5.2:
   version "2.5.2"

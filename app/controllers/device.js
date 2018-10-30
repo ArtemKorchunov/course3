@@ -29,7 +29,7 @@ class Device {
         ...otherBody,
         user_id: data.user_id
       });
-      await Promise.all(device.addCharts(charts));
+      await device.addCharts(charts);
       return ctx.res.created({
         message: 'Device created successfully!'
       });
@@ -47,6 +47,7 @@ class Device {
   async update(ctx) {
     const { charts = null, ...otherBody } = ctx.request.body;
     try {
+      const filteredCharts = [...new Set(charts)];
       const {
         data: { user_id }
       } = jwt.decode(ctx.headers.authorization.split(' ')[1]);
@@ -54,8 +55,11 @@ class Device {
         id: ctx.params.id,
         user_id
       });
-      if (charts) await currentDevice.setCharts([...new Set(charts)]);
+      if (charts) await currentDevice.setCharts(filteredCharts);
       await currentDevice.update(otherBody);
+      return ctx.res.ok({
+        message: 'Updated successfully!'
+      });
     } catch ({ errors }) {
       return ctx.res.unprocessableEntity({
         data: errors.reduce(
@@ -72,7 +76,10 @@ class Device {
         data: { user_id }
       } = jwt.decode(ctx.headers.authorization.split(' ')[1]);
       await ctx.models.Device.destroy({
-        where: { token: ctx.params.id, user_id }
+        where: { id: ctx.params.id, user_id }
+      });
+      return ctx.res.ok({
+        message: 'Device was deleted successfully!'
       });
     } catch ({ errors }) {
       return ctx.res.unprocessableEntity({

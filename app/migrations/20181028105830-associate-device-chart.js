@@ -14,11 +14,25 @@ module.exports = {
       },
       device_id: {
         type: Sequelize.INTEGER,
-        primaryKey: true
+        references: {
+          model: 'Devices',
+          key: 'id'
+        },
+        onDelete: 'CASCADE'
       },
       chart_id: {
         type: Sequelize.INTEGER,
-        primaryKey: true
+        references: {
+          model: 'Charts',
+          key: 'id'
+        },
+        onDelete: 'CASCADE'
+      },
+      id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
       }
     });
   },

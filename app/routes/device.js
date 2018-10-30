@@ -41,7 +41,7 @@ router.put(
     ctx.checkParams('id').toInt();
     ctx
       .checkBody('charts')
-      .notEmpty()
+      .optional()
       .clone('chart_ids');
   }),
   Device.update
