@@ -8,7 +8,14 @@ const router = new Router({ prefix: '/device' });
 router.get(
   '/',
   validate(ctx => {
-    ctx.checkParams('id').toInt();
+    ctx
+      .checkQuery('count')
+      .notEmpty()
+      .toInt();
+    ctx
+      .checkQuery('page')
+      .notEmpty()
+      .toInt();
   }),
   Device.get
 );
@@ -24,7 +31,6 @@ router.post(
     ctx
       .checkBody('charts')
       .notEmpty()
-      .isNumeric()
       .clone('chart_ids');
   }),
   Device.create
@@ -33,6 +39,10 @@ router.put(
   '/:id',
   validate(ctx => {
     ctx.checkParams('id').toInt();
+    ctx
+      .checkBody('charts')
+      .notEmpty()
+      .clone('chart_ids');
   }),
   Device.update
 );

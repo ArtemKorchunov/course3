@@ -1,17 +1,38 @@
+const jwt = require('jsonwebtoken');
 const config = require('../config');
+
 class Device {
   constructor() {}
-  async get(ctx) {}
+
+  async get(ctx) {
+    const {
+      data: { user_id }
+    } = jwt.decode(
+      ctx.headers.authorization.split(' ')[1],
+      config.secret_jwt_key
+    );
+    const devices = await ctx.models.Device.findAll({
+      offset: ctx.query.page * ctx.query.count,
+      where: { user_id: user_id }
+    });
+    return ctx.res.ok({
+      data: devices
+    });
+  }
+
   async create(ctx) {
     const { chart_ids, ...otherBody } = ctx.request.body;
     const charts = [...new Set(chart_ids)];
     try {
-      const device = ctx.models.Device.create(otherBody);
-      await Promise.all(
-        charts.map(chart_id =>
-          ctx.models.DeviceChart.create({ device_id: device.id, chart_id })
-        )
-      );
+      const { data } = jwt.decode(ctx.headers.authorization.split(' ')[1]);
+      const device = await ctx.models.Device.create({
+        ...otherBody,
+        user_id: data.user_id
+      });
+      await Promise.all(device.addCharts(charts));
+      return ctx.res.created({
+        message: 'Device created successfully!'
+      });
     } catch ({ errors }) {
       return ctx.res.unprocessableEntity({
         data: errors.reduce(
@@ -22,17 +43,36 @@ class Device {
       });
     }
   }
+
   async update(ctx) {
-    const body = ctx.request.body;
+    const { charts = null, ...otherBody } = ctx.request.body;
     try {
-      const currentDevice = ctx.models.Device.findById(ctx.params.id);
-      console.log(currentDevice);
-    } catch (err) {}
+      const {
+        data: { user_id }
+      } = jwt.decode(ctx.headers.authorization.split(' ')[1]);
+      const currentDevice = await ctx.models.Device.findOne({
+        id: ctx.params.id,
+        user_id
+      });
+      if (charts) await currentDevice.setCharts([...new Set(charts)]);
+      await currentDevice.update(otherBody);
+    } catch ({ errors }) {
+      return ctx.res.unprocessableEntity({
+        data: errors.reduce(
+          (prevItem, item) => ({ ...prevItem, [item.path]: item.message }),
+          {}
+        ),
+        message: 'Unprocessable entity!'
+      });
+    }
   }
   async delete(ctx) {
     try {
+      const {
+        data: { user_id }
+      } = jwt.decode(ctx.headers.authorization.split(' ')[1]);
       await ctx.models.Device.destroy({
-        where: { token: ctx.params.id }
+        where: { token: ctx.params.id, user_id }
       });
     } catch ({ errors }) {
       return ctx.res.unprocessableEntity({

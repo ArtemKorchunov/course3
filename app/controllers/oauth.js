@@ -18,7 +18,7 @@ class OAuth {
         message: 'Unprocessable entity!'
       });
     }
-    return ctx.res.ok();
+    return ctx.res.created();
   }
 
   async check(ctx) {
