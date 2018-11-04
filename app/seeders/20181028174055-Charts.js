@@ -6,13 +6,19 @@ module.exports = {
       'Charts',
       [
         {
-          name: 'Footfall'
+          name: 'Footfall',
+          createdAt: new Date(),
+          updatedAt: new Date()
         },
         {
-          name: 'Heatmap'
+          name: 'Heatmap',
+          createdAt: new Date(),
+          updatedAt: new Date()
         },
         {
-          name: 'Diagram'
+          name: 'Diagram',
+          createdAt: new Date(),
+          updatedAt: new Date()
         }
       ],
       {}

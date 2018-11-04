@@ -5,9 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: DataTypes.STRING
     },
-    {
-      timestamp: false
-    }
+    {}
   );
   Chart.associate = function (models) {
     Chart.belongsToMany(models.Device, {
