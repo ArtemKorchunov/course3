@@ -106,24 +106,24 @@ jobs:
           command: |
             docker logout https://$DOCKER_ECR
 
-workflows:
-  version: 2
-  build-and-deploy:
-    jobs:
-      - test:
-          context: org-global
-      - build:
-          context: org-global
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              only:
-                - develop
-      - deploy:
-          context: org-global
-          requires:
-            - build
-          filters:
-            tags:
-              only: /^v.*/
+# workflows:
+#   version: 2
+#   build-and-deploy:
+#     jobs:
+#       - test:
+#           context: org-global
+#       - build:
+#           context: org-global
+#           filters:
+#             tags:
+#               only: /^v.*/
+#             branches:
+#               only:
+#                 - develop
+#       - deploy:
+#           context: org-global
+#           requires:
+#             - build
+#           filters:
+#             tags:
+#               only: /^v.*/
