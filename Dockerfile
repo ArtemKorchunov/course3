@@ -22,7 +22,7 @@ FROM base AS dependencies
 # Install Node.js dependencies (only production)
 RUN yarn --production
 # Copy production dependencies aside
-RUN cp -R node_modules /tmp/node_modules
+RUN cp -R /node_modules /tmp/node_modules
 # Install ALL Node.js dependencies
 RUN yarn
 
