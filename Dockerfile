@@ -19,7 +19,7 @@ COPY yarn.lock .
 FROM base AS dependencies
 # Install Node.js dependencies (only production)
 RUN apk update
-RUN apk add python
+RUN apk add python make g++
 RUN yarn --production
 # Copy production dependencies aside
 RUN cp -R node_modules /tmp/node_modules
