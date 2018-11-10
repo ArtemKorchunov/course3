@@ -15,14 +15,14 @@ LABEL maintainer "Byungjin Park <posquit0.bj@gmail.com>"
 # Set the working directory
 WORKDIR /app
 # Copy project specification and dependencies lock files
-COPY package.json yarn.lock ./
-
+COPY package.json .
+COPY yarn.lock .
 ### DEPENDENCIES
 FROM base AS dependencies
 # Install Node.js dependencies (only production)
 RUN yarn --production
 # Copy production dependencies aside
-RUN cp -R /node_modules /tmp/node_modules
+RUN cp -R node_modules /tmp/node_modules
 # Install ALL Node.js dependencies
 RUN yarn
 
