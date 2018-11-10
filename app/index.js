@@ -21,6 +21,7 @@ const oauth = require('./routes/oauth');
 const router = require('./routes/general');
 const device = require('./routes/device');
 const chart = require('./routes/chart');
+const deviceLogs = require('./routes/deviceLogs');
 
 const models = require('./models');
 
@@ -62,6 +63,7 @@ app.use(device.routes());
 app.use(oauth.routes());
 app.use(router.routes());
 app.use(router.allowedMethods());
+app.ws.use(deviceLogs.routes());
 
 app.context.models = models;
 
