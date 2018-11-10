@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const config = require('../config');
+// const jwt = require('jsonwebtoken');
+// const config = require('../config');
 
 class Chart {
   constructor() {}
@@ -16,7 +16,7 @@ class Chart {
   async create(ctx) {
     try {
       // const { data } = jwt.decode(ctx.headers.authorization.split(' ')[1]);
-      const chart = await ctx.models.Chart.create({
+      await ctx.models.Chart.create({
         ...ctx.request.body
       });
       return ctx.res.created({
