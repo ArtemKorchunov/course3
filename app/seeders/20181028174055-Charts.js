@@ -1,26 +1,26 @@
 'use strict';
 
+const seeders = [
+  {
+    name: 'Footfall'
+  },
+  {
+    name: 'Heatmap'
+  },
+  {
+    name: 'Diagram'
+  }
+];
+
 module.exports = {
   up: queryInterface => {
     return queryInterface.bulkInsert(
       'Charts',
-      [
-        {
-          name: 'Footfall',
-          createdAt: new Date(),
-          updatedAt: new Date()
-        },
-        {
-          name: 'Heatmap',
-          createdAt: new Date(),
-          updatedAt: new Date()
-        },
-        {
-          name: 'Diagram',
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }
-      ],
+      seeders.map(item => ({
+        ...item,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })),
       {}
     );
   },

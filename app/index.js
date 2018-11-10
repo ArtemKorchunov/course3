@@ -9,6 +9,7 @@ const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const cors = require('@koa/cors');
 const jwt = require('koa-jwt');
+const websockify = require('koa-websocket');
 
 const errorHandler = require('./middlewares/errorHandler');
 const logMiddleware = require('./middlewares/log');
@@ -23,7 +24,7 @@ const chart = require('./routes/chart');
 
 const models = require('./models');
 
-const app = new Koa();
+const app = websockify(new Koa());
 require('koa-validate')(app);
 
 // Trust proxy

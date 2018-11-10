@@ -49,6 +49,7 @@
   "dependencies": {
     "@koa/cors": "^2.2.2",
     "bcrypt": "^3.0.2",
+    "brain.js": "^1.4.8",
     "bunyan": "^1.8.12",
     "dotenv": "^6.0.0",
     "elastic-apm-node": "^1.8.3",

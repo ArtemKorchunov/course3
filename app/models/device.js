@@ -4,7 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     'Device',
     {
       name: DataTypes.STRING,
-      description: DataTypes.STRING
+      description: DataTypes.STRING,
+      status: DataTypes.ENUM('Ok', 'Error')
     },
     {}
   );
@@ -12,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
     Device.belongsToMany(models.Chart, {
       through: 'DeviceCharts',
       foreignKey: 'device_id'
+    });
+    Device.belongsTo(models.DeviceCategorie, {
+      foreignKey: 'categorie_id'
     });
   };
   return Device;

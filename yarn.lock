@@ -75,6 +75,11 @@ acorn@^5.0.0, acorn@^5.0.3, acorn@^5.5.3, acorn@^5.6.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.7.1.tgz#f095829297706a7c9776958c0afc8930a9b9d9d8"
   integrity sha512-d+nbxBUGKg7Arpsvbnlq61mc12ek3EY8EQldM3GPAhWJ1UVxC6TDGbIvUMNU6obBX3i1+ptCIzV4vq0gFPEGVQ==
 
+acorn@^5.1.1:
+  version "5.7.3"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.7.3.tgz#67aa231bf8812974b85235a96771eb6bd07ea279"
+  integrity sha512-T/zvzYRfbVojPWahDsE5evJdHb3oJoQfFbsrKM7w5Zcs++Tr257tia3BmMP8XYVjp1S9RZXQMh7gao96BlqZOw==
+
 after-all-results@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/after-all-results/-/after-all-results-2.0.0.tgz#6ac2fc202b500f88da8f4f5530cfa100f4c6a2d0"
@@ -639,6 +644,14 @@ braces@^2.3.0, braces@^2.3.1:
     snapdragon-node "^2.0.1"
     split-string "^3.0.2"
     to-regex "^3.0.1"
+
+brain.js@^1.4.8:
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/brain.js/-/brain.js-1.4.8.tgz#b1183e67ce0047cdcc1aa478926d3e864fa2ab44"
+  integrity sha512-TGDQLKfQ7OLxddExxzvKFpvMFDlHGwJglqvyOwRDNs6WK1wrd+i6qyRuSDklyNA+Tmk47r6xMonGjP947VFz7Q==
+  dependencies:
+    gpu.js "^1.2.0"
+    thaw.js "^2.0.0"
 
 browser-process-hrtime@^0.1.2:
   version "0.1.2"
@@ -2079,6 +2092,13 @@ got@^6.7.1:
     timed-out "^4.0.0"
     unzip-response "^2.0.1"
     url-parse-lax "^1.0.0"
+
+gpu.js@^1.2.0:
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/gpu.js/-/gpu.js-1.10.2.tgz#b0cb38d288988382d9be99ec7d2dc34ab33400c7"
+  integrity sha512-wBRXaGBf5WLrIN+eR+isWLzaVoNwYeJG/t9AWyj24nw+iWKJzbDZ1LrKhNjuTXwFvUqPFYOwPkGnPWBBJiRQoQ==
+  dependencies:
+    acorn "^5.1.1"
 
 graceful-fs@^4.1.11, graceful-fs@^4.1.2:
   version "4.1.11"
@@ -5527,6 +5547,11 @@ text-table@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
+
+thaw.js@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/thaw.js/-/thaw.js-2.0.0.tgz#452bc5d7ee2ce1b6f92037b05b506cbd656291d0"
+  integrity sha1-RSvF1+4s4bb5IDewW1BsvWVikdA=
 
 throat@^4.0.0:
   version "4.1.0"
