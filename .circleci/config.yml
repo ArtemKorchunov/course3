@@ -120,11 +120,10 @@ workflows:
             branches:
               only:
                 - develop
-      # Uncomment when you use this boilerplate for your own project
-      # - deploy:
-      #     context: org-global
-      #     requires:
-      #       - build
-      #     filters:
-      #       tags:
-      #         only: /^v.*/
+      - deploy:
+          context: org-global
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
