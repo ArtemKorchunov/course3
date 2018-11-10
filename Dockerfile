@@ -10,12 +10,12 @@
 
 ### BASE
 FROM node:8.11.3-alpine AS base
+FROM python:2
 LABEL maintainer "Byungjin Park <posquit0.bj@gmail.com>"
 # Set the working directory
 WORKDIR /app
 # Copy project specification and dependencies lock files
 COPY package.json yarn.lock ./
-
 
 ### DEPENDENCIES
 FROM base AS dependencies

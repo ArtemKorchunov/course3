@@ -13,9 +13,6 @@ jobs:
             - dependencies-{{ .Branch }}-
             - dependencies-master-
       - run:
-          name: Install python
-          command: sudo apt-get install python
-      - run:
           name: Install Dependencies
           command: yarn
       - save_cache:
