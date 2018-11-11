@@ -24,7 +24,8 @@ const configs = {
       host: '127.0.0.1',
       dialect: 'mysql',
       operatorsAliases: false
-    }
+    },
+    use_env_variable: 'CLEARDB_DATABASE_URL'
   },
   production: {
     port: process.env.APP_PORT || 7071
