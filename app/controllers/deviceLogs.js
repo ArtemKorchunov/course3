@@ -8,3 +8,5 @@ class DeviceLogs {
     );
   }
 }
+
+module.exports = new DeviceLogs();
