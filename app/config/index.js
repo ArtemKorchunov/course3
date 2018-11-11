@@ -28,7 +28,7 @@ const configs = {
     use_env_variable: 'CLEARDB_DATABASE_URL'
   },
   production: {
-    port: process.env.APP_PORT || 7071
+    port: process.env.PORT || 7071
   },
   development: {},
   test: {
