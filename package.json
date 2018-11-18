@@ -47,7 +47,6 @@
     "lint:test": "eslint test"
   },
   "dependencies": {
-    "@koa/cors": "^2.2.2",
     "bcrypt": "^3.0.2",
     "brain.js": "^1.4.8",
     "bunyan": "^1.8.12",
@@ -60,6 +59,7 @@
     "koa-router": "^7.4.0",
     "koa-validate": "^1.0.7",
     "koa-websocket": "^5.0.1",
+    "koa2-cors": "^2.0.6",
     "mysql2": "^1.6.1",
     "oauth2-server": "^3.0.1",
     "sequelize": "^4.39.1",
