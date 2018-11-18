@@ -31,13 +31,7 @@ require('koa-validate')(app);
 // Trust proxy
 app.proxy = true;
 
-app.use(
-  cors({
-    origin: '*',
-    allowMethods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH'],
-    exposeHeaders: ['X-Request-Id']
-  })
-);
+app.use(cors());
 
 // Middleware below this line is only reached if JWT token is valid
 // unless the URL starts with '/public'
@@ -75,7 +69,8 @@ function onError(err, ctx) {
 }
 
 // Handle uncaught errors
-app.on('error', onError);com
+app.on('error', onError);
+com;
 // Start server
 if (!module.parent) {
   const server = app.listen(config.port, () => {
