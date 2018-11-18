@@ -75,7 +75,6 @@ function onError(err, ctx) {
 
 // Handle uncaught errors
 app.on('error', onError);
-com;
 // Start server
 if (!module.parent) {
   const server = app.listen(config.port, () => {
