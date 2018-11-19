@@ -7,8 +7,9 @@ class OAuth {
   constructor() {}
   async create(ctx) {
     // Current logic
+    const { name = null, email, password } = ctx.request.body;
     try {
-      await ctx.models.User.create(ctx.request.body);
+      await ctx.models.User.create({ name, email, password });
     } catch ({ errors }) {
       return ctx.res.unprocessableEntity({
         data: errors.reduce(
