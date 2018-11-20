@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: DataTypes.STRING,
       description: DataTypes.STRING,
-      status: DataTypes.ENUM('Ok', 'Error')
+      status: DataTypes.BOOLEAN
     },
     {}
   );

@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  DeviceCategorie.associate = function () {
+  DeviceCategorie.associate = function (models) {
     // associations can be defined here
   };
   return DeviceCategorie;

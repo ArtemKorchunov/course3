@@ -33,7 +33,7 @@ class OAuth {
       });
       if (!user) {
         return ctx.res.unprocessableEntity({
-          email: ['Email is not correct!']
+          data: { email: ['Email is not correct!'] }
         });
       }
       if (user.checkPassword(ctx.request.body.password)) {
@@ -63,7 +63,8 @@ class OAuth {
         });
       } else {
         return ctx.res.unprocessableEntity({
-          password: ['Password is not correct!']
+          data: { password: ['Password is not correct!'] },
+          message: 'Unprocessable entity!'
         });
       }
     } catch ({ errors }) {

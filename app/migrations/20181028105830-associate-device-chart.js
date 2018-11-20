@@ -4,13 +4,11 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     // Device belongsToMany Chart
     return queryInterface.createTable('DeviceCharts', {
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+      id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
       },
       device_id: {
         type: Sequelize.INTEGER,
@@ -28,11 +26,13 @@ module.exports = {
         },
         onDelete: 'CASCADE'
       },
-      id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
       }
     });
   },

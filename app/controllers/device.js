@@ -11,13 +11,18 @@ class Device {
       ctx.headers.authorization.split(' ')[1],
       config.secret_jwt_key
     );
-    const devices = await ctx.models.Device.findAll({
-      offset: ctx.query.page * ctx.query.count,
-      where: { user_id: user_id }
-    });
-    return ctx.res.ok({
-      data: devices
-    });
+    try {
+      const devices = await ctx.models.Device.findAll({
+        offset: ctx.query.page * ctx.query.count,
+        limit: ctx.query.count,
+        where: { user_id: user_id }
+      });
+      return ctx.res.ok({
+        data: devices
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async create(ctx) {

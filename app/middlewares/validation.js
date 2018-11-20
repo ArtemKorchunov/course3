@@ -7,7 +7,10 @@ function validateBody(validateByRules, options = {}) {
     validateByRules(ctx);
     if (ctx.errors) {
       return ctx.res[type]({
-        data: ctx.errors,
+        data: ctx.errors.reduce(
+          (prevItem, item) => ({ ...prevItem, ...item }),
+          {}
+        ),
         message
       });
     }
