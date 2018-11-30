@@ -1,0 +1,58 @@
+[
+  {
+    "input": [23],
+    "output": [0]
+  },
+  {
+    "input": [21],
+    "output": [0]
+  },
+  {
+    "input": [20],
+    "output": [0]
+  },
+  {
+    "input": [10],
+    "output": [0]
+  },
+  {
+    "input": [11],
+    "output": [0]
+  },
+  {
+    "input": [12.3231],
+    "output": [0]
+  },
+  {
+    "input": [12.3421412],
+    "output": [0]
+  },
+  {
+    "input": [18],
+    "output": [0]
+  },
+  {
+    "input": [18.132123],
+    "output": [0]
+  },
+  {
+    "input": [29],
+    "output": [0]
+  },
+  {
+    "input": [200],
+    "output": [1]
+  },
+  {
+    "input": [89],
+    "output": [0]
+  },
+  {
+    "input": [333],
+    "output": [1]
+  },
+  {
+    "input": [424],
+    "output": [1]
+  }
+]

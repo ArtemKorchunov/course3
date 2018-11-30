@@ -97,10 +97,13 @@ class OAuth {
           where: {
             token: oldToken,
             refreshToken: oldRefreshToken
-          }
+          },
+          returning: true,
+          plain: true
         }
       );
-      if (!token.pop()) throw new Error('This token is outdated!');
+      if (token.length < 2 && !token.pop())
+        throw new Error('This token is outdated!');
       return ctx.res.ok({
         data: {
           ...body,

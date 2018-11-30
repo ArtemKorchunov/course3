@@ -19,6 +19,13 @@ router.get(
   }),
   Device.get
 );
+router.get(
+  '/:id',
+  validate(ctx => {
+    ctx.checkParams('id').toInt();
+  }),
+  Device.getById
+);
 router.post(
   '/',
   validate(ctx => {

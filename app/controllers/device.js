@@ -25,6 +25,26 @@ class Device {
     }
   }
 
+  async getById(ctx) {
+    const {
+      data: { user_id }
+    } = jwt.decode(
+      ctx.headers.authorization.split(' ')[1],
+      config.secret_jwt_key
+    );
+    try {
+      const device = await ctx.models.Device.findOne({
+        where: { user_id, id: ctx.params.id },
+        attributes: ['id', 'name', 'description', 'status']
+      });
+      return ctx.res.ok({
+        data: device
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async create(ctx) {
     const { chart_ids, ...otherBody } = ctx.request.body;
     const charts = [...new Set(chart_ids)];
