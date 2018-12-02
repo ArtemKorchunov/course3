@@ -52,6 +52,7 @@
     "bunyan": "^1.8.12",
     "dotenv": "^6.0.0",
     "elastic-apm-node": "^1.8.3",
+    "http": "^0.0.0",
     "i18next": "^12.0.0",
     "i18next-browser-languagedetector": "^2.2.4",
     "jsonwebtoken": "^8.3.0",
@@ -67,7 +68,7 @@
     "react-i18next": "^8.3.8",
     "react-rt-chart": "^2.0.0",
     "sequelize": "^4.39.1",
-    "socket.io": "^2.1.1",
+    "socket.io": "^2.2.0",
     "swagger-jsdoc": "^3.0.2",
     "uuid": "^3.3.2",
     "wavy": "^1.0.4"

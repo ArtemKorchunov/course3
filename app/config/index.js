@@ -16,7 +16,7 @@ const configs = {
     client_name: 'application',
     secret_jwt_key: process.env.JWT_SECRET || 'secret',
     jwt_expiration: process.env.JWT_EXPIRATION || 3600,
-    jwt_expiration_miliseconds: (process.env.JWT_EXPIRATION || 3600) * 1000,
+    jwt_expiration_miliseconds: (process.env.JWT_EXPIRATION || 360000) * 1000,
     db: {
       database: process.env.DB_NAME,
       username: process.env.DB_USERNAME,

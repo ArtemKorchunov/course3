@@ -38,9 +38,7 @@ class OAuth {
       }
       if (user.checkPassword(ctx.request.body.password)) {
         let body = {};
-        const expiresIn = Math.floor(
-          (Date.now() + config.jwt_expiration_miliseconds) / 1000
-        );
+        const expiresIn = Math.floor(Date.now() / 1000) + config.jwt_expiration;
         body.token = jwt_sign({
           data: {
             user_id: user.id,
@@ -81,9 +79,7 @@ class OAuth {
     try {
       const decoded = jwt.decode(oldToken);
       let body = {};
-      const expiresIn = Math.floor(
-        (Date.now() + config.jwt_expiration_miliseconds) / 1000
-      );
+      const expiresIn = Math.floor(Date.now() / 1000) + config.jwt_expiration;
       body.token = jwt_sign({
         data: decoded.data,
         exp: expiresIn

@@ -9,34 +9,39 @@ const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const cors = require('koa2-cors');
 const jwt = require('koa-jwt');
-const websockify = require('koa-websocket');
 
 const errorHandler = require('./middlewares/errorHandler');
 const logMiddleware = require('./middlewares/log');
 const logger = require('./logger');
 const requestId = require('./middlewares/requestId');
 const responseHandler = require('./middlewares/responseHandler');
+const DeviceSocket = require('./controllers/deviceSocket');
 
 const oauth = require('./routes/oauth');
 const router = require('./routes/general');
 const device = require('./routes/device');
 const chart = require('./routes/chart');
-const deviceLogs = require('./routes/deviceLogs');
+const user = require('./routes/user');
 
 const models = require('./models');
 
-const app = websockify(new Koa());
+const app = new Koa();
+const http = require('http').createServer(app.callback());
+
+const io = require('socket.io')(http, { path: '/listen' });
+
 require('koa-validate')(app);
 
-// Trust proxy
+// Trust proxy & Enable CORS
 app.proxy = true;
+app.use(cors());
 
-app.use(
-  cors({
-    origin: true,
-    credentials: true
-  })
-);
+// Create Namespace for socket
+const nsp = io.of('/device');
+const DeviceInstance = DeviceSocket(io, nsp);
+DeviceInstance.connect = DeviceInstance.connect.bind(DeviceInstance);
+
+nsp.on('connection', DeviceInstance.connect);
 
 // Middleware below this line is only reached if JWT token is valid
 // unless the URL starts with '/public'
@@ -63,8 +68,8 @@ app.use(chart.routes());
 app.use(device.routes());
 app.use(oauth.routes());
 app.use(router.routes());
+app.use(user.routes());
 app.use(router.allowedMethods());
-app.ws.use(deviceLogs.routes());
 
 app.context.models = models;
 
@@ -77,13 +82,13 @@ function onError(err, ctx) {
 app.on('error', onError);
 // Start server
 if (!module.parent) {
-  const server = app.listen(config.port, () => {
+  const server = http.listen(config.port, () => {
     logger.info(
       { event: 'execute' },
       `API server listening on ${config.host}:${config.port}, in ${config.env}`
     );
   });
-  server.on('error', onError);
+  app.on('error', onError);
 }
 
 // Expose app

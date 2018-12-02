@@ -15,7 +15,17 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
       password: { type: DataTypes.STRING, allowNull: false },
-      name: DataTypes.STRING
+      name: DataTypes.STRING,
+      admin: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
+      banned: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      }
     },
     {
       hooks: {
