@@ -31,7 +31,7 @@ class OAuth {
       const user = await ctx.models.User.findOne({
         where: { email: ctx.request.body.email }
       });
-      if (!user) {
+      if (!user || user.banned) {
         return ctx.res.unprocessableEntity({
           data: { email: ['Email is not correct!'] }
         });
