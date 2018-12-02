@@ -42,7 +42,8 @@ class OAuth {
         body.token = jwt_sign({
           data: {
             user_id: user.id,
-            client_id: current_client.id
+            client_id: current_client.id,
+            admin: user.admin
           },
           exp: expiresIn
         });
@@ -55,7 +56,8 @@ class OAuth {
         return ctx.res.ok({
           data: {
             ...body,
-            expiresIn
+            expiresIn,
+            admin: user.admin
           },
           message: 'Successfully loged in!'
         });
