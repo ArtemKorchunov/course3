@@ -1,15 +1,12 @@
-const brain = require('brain.js');
 const jwt = require('jsonwebtoken');
 
 const models = require('../models');
 const config = require('../config');
-const dataset = require('../datasets/temperature.json');
-const network = new brain.NeuralNetwork();
+
 class DeviceLogs {
   constructor(io, nsp) {
     this.io = io;
     this.nsp = nsp;
-    network.train(dataset);
   }
 
   connect(client) {
