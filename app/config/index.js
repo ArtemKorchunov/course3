@@ -14,6 +14,7 @@ const configs = {
     port: 4000,
     token_expiration: 5000,
     client_name: 'application',
+    iot_name: 'iot-device',
     secret_jwt_key: process.env.JWT_SECRET || 'secret',
     jwt_expiration: process.env.JWT_EXPIRATION || 3600,
     jwt_expiration_miliseconds: (process.env.JWT_EXPIRATION || 360000) * 1000,

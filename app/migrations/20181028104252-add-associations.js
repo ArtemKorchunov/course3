@@ -44,6 +44,17 @@ module.exports = {
           onUpdate: 'CASCADE',
           onDelete: 'SET NULL'
         });
+      })
+      .then(() => {
+        return queryInterface.addColumn('Sensors', 'device_id', {
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'Devices',
+            key: 'id'
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'SET NULL'
+        });
       });
   },
   down: queryInterface => {
@@ -57,6 +68,9 @@ module.exports = {
       })
       .then(() => {
         return queryInterface.removeColumn('Devices', 'categorie_id');
+      })
+      .then(() => {
+        return queryInterface.removeColumn('Sensors', 'device_id');
       });
   }
 };

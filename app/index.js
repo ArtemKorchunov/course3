@@ -22,6 +22,7 @@ const router = require('./routes/general');
 const device = require('./routes/device');
 const chart = require('./routes/chart');
 const user = require('./routes/user');
+const iot = require('./routes/iot');
 
 const models = require('./models');
 
@@ -45,7 +46,9 @@ nsp.on('connection', DeviceInstance.connect);
 
 // Middleware below this line is only reached if JWT token is valid
 // unless the URL starts with '/public'
-app.use(jwt({ secret: config.secret_jwt_key }).unless({ path: [/^\/oauth/] }));
+app.use(
+  jwt({ secret: config.secret_jwt_key }).unless({ path: [/^\/oauth|iot/] })
+);
 
 // Set middlewares
 app.use(
@@ -70,8 +73,10 @@ app.use(oauth.routes());
 app.use(router.routes());
 app.use(user.routes());
 app.use(router.allowedMethods());
+app.use(iot.routes());
 
 app.context.models = models;
+app.context.io = io;
 
 function onError(err, ctx) {
   if (ctx == null)

@@ -15,6 +15,7 @@ class DeviceLogs {
   connect(client) {
     const { query } = client.handshake;
     if (query.token && query.device) this.deviceLogger(client, query);
+    client.on('device message', this.listenIoTLoggs);
   }
 
   async deviceLogger(client, query) {
@@ -24,19 +25,26 @@ class DeviceLogs {
         where: { user_id: data.user_id, id: query.device },
         attributes: ['id', 'name', 'description', 'status']
       });
-      client.join(`device_${query.device}`);
-      clearInterval(this.timer);
-      this.timer = setInterval(() => {
-        const heat = Math.random() * 100;
-        const prediction = network.run([heat]);
-        this.io
-          .of('/device')
-          .to(`device_${query.device}`)
-          .emit('payload', { heat, prediction });
-      }, 3000);
+      const currentSensor = await models.Sensor.findOne({
+        where: { device_id: query.device }
+      });
+      client.join(`device_${currentSensor.identifier}`);
+      // clearInterval(this.timer);
+      // this.timer = setInterval(() => {
+      //   const heat = Math.random() * 100;
+      //   const prediction = network.run([heat]);
+      //   this.io
+      //     .of('/device')
+      //     .to(`device_${query.device}`)
+      //     .emit('payload', { heat, prediction });
+      // }, 3000);
     } catch (err) {
       client.emit('payload', 'Something went wrong');
     }
+  }
+
+  async listenIoTLoggs(msg) {
+    console.log(msg);
   }
 }
 

@@ -61,4 +61,5 @@ router.delete(
   Device.delete
 );
 
+router.get('/:id');
 module.exports = router;
