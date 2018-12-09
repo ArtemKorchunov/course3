@@ -23,6 +23,7 @@ const device = require('./routes/device');
 const chart = require('./routes/chart');
 const user = require('./routes/user');
 const iot = require('./routes/iot');
+const statistic = require('./routes/statistic');
 
 const models = require('./models');
 
@@ -74,6 +75,7 @@ app.use(router.routes());
 app.use(user.routes());
 app.use(router.allowedMethods());
 app.use(iot.routes());
+app.use(statistic.routes());
 
 app.context.models = models;
 app.context.io = io;

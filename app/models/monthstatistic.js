@@ -9,9 +9,6 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   MonthStatistic.associate = function (models) {
-    MonthStatistic.belongsTo(models.Sensor, {
-      foreignKey: 'sensor_id'
-    });
     MonthStatistic.belongsTo(models.Month, {
       foreignKey: 'month_id'
     });

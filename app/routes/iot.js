@@ -6,6 +6,8 @@ const validate = require('../middlewares/validation');
 
 const router = new Router({ prefix: '/iot' });
 
+IoT.getLoggerInfo = IoT.getLoggerInfo.bind(IoT);
+
 router.post(
   '/auth',
   validate(ctx => {

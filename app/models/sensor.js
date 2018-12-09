@@ -9,9 +9,16 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   Sensor.associate = function (models) {
-    return Sensor.belongsTo(models.Device, {
+    Sensor.belongsTo(models.Device, {
       foreignKey: 'device_id'
     });
+    Sensor.hasOne(models.TemperatureLevel, {
+      foreignKey: 'sensor_id'
+    });
+    Sensor.hasOne(models.MonthStatistic, {
+      foreignKey: 'sensor_id'
+    });
+    return Sensor;
   };
   return Sensor;
 };

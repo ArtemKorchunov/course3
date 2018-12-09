@@ -9,10 +9,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  TemperatureLevel.associate = function (models) {
-    return TemperatureLevel.belongsTo(models.Sensor, {
-      foreignKey: 'sensor_id'
-    });
-  };
+  TemperatureLevel.associate = function (models) {};
   return TemperatureLevel;
 };

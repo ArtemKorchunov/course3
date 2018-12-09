@@ -12,7 +12,6 @@ class DeviceLogs {
   connect(client) {
     const { query } = client.handshake;
     if (query.token && query.device) this.deviceLogger(client, query);
-    client.on('device message', this.listenIoTLoggs);
   }
 
   async deviceLogger(client, query) {
