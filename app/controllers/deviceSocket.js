@@ -26,22 +26,9 @@ class DeviceLogs {
         where: { device_id: query.device }
       });
       client.join(`device_${currentSensor.identifier}`);
-      // clearInterval(this.timer);
-      // this.timer = setInterval(() => {
-      //   const heat = Math.random() * 100;
-      //   const prediction = network.run([heat]);
-      //   this.io
-      //     .of('/device')
-      //     .to(`device_${query.device}`)
-      //     .emit('payload', { heat, prediction });
-      // }, 3000);
     } catch (err) {
       client.emit('payload', 'Something went wrong');
     }
-  }
-
-  async listenIoTLoggs(msg) {
-    console.log(msg);
   }
 }
 

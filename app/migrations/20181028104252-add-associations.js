@@ -55,6 +55,39 @@ module.exports = {
           onUpdate: 'CASCADE',
           onDelete: 'SET NULL'
         });
+      })
+      .then(() => {
+        return queryInterface.addColumn('MonthStatistics', 'sensor_id', {
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'Sensors',
+            key: 'id'
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'SET NULL'
+        });
+      })
+      .then(() => {
+        return queryInterface.addColumn('MonthStatistics', 'month_id', {
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'Months',
+            key: 'id'
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'SET NULL'
+        });
+      })
+      .then(() => {
+        return queryInterface.addColumn('TemperatureLevels', 'sensor_id', {
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'Sensors',
+            key: 'id'
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'SET NULL'
+        });
       });
   },
   down: queryInterface => {
@@ -71,6 +104,15 @@ module.exports = {
       })
       .then(() => {
         return queryInterface.removeColumn('Sensors', 'device_id');
+      })
+      .then(() => {
+        return queryInterface.removeColumn('MonthStatistics', 'sensor_id');
+      })
+      .then(() => {
+        return queryInterface.removeColumn('MonthStatistics', 'month_id');
+      })
+      .then(() => {
+        return queryInterface.removeColumn('TemperatureLevels', 'sensor_id');
       });
   }
 };

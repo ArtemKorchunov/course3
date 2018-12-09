@@ -9,7 +9,7 @@ class IoT {
     network.train(dataset);
   }
 
-  async getLoggerInfo(ctx) {
+  getLoggerInfo(ctx) {
     const prediction = network.run([ctx.query.heat]);
     ctx.io
       .of('/device')
@@ -17,14 +17,23 @@ class IoT {
       .emit('payload', { heat: ctx.query.heat, prediction });
   }
 
+  async analyzeLogs(msg) {}
+
   async iotAuth(ctx) {
     // Current logic
-    const { name } = ctx.request.body;
-    const identifier = uuidv4();
+    const { name, identifier = null } = ctx.request.body;
+    let currentIdentifier;
+
+    if (identifier) currentIdentifier = identifier;
+    else currentIdentifier = uuidv4();
+
     try {
-      await ctx.models.Sensor.create({ identifier, name });
+      const sensor = await ctx.models.Sensor.create({
+        identifier: currentIdentifier,
+        name
+      });
       ctx.res.created({
-        data: { identifier }
+        data: { identifier: currentIdentifier, id: sensor.id }
       });
     } catch ({ errors }) {
       return ctx.res.unprocessableEntity({
