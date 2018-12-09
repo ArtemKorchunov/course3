@@ -28,12 +28,20 @@ class IoT {
     else currentIdentifier = uuidv4();
 
     try {
-      const sensor = await ctx.models.Sensor.create({
-        identifier: currentIdentifier,
-        name
+      let currentSensor;
+      currentSensor = await ctx.models.Sensor.findOne({
+        where: {
+          identifier: currentIdentifier
+        }
       });
+      if (!currentSensor) {
+        currentSensor = await ctx.models.Sensor.create({
+          identifier: currentIdentifier,
+          name
+        });
+      }
       ctx.res.created({
-        data: { identifier: currentIdentifier, id: sensor.id }
+        data: { identifier: currentIdentifier, id: currentSensor.id }
       });
     } catch ({ errors }) {
       return ctx.res.unprocessableEntity({
