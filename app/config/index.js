@@ -25,8 +25,7 @@ const configs = {
       host: 'locahost',
       dialect: 'mysql',
       operatorsAliases: false
-    },
-    use_env_variable: 'CLEARDB_DATABASE_URL'
+    }
   },
   production: {
     port: process.env.PORT || 7071
