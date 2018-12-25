@@ -30,6 +30,7 @@ router.post(
   '/',
   validate(ctx => {
     ctx.checkBody('name').notEmpty();
+    ctx.checkBody('sensor_id').notEmpty();
     ctx
       .checkBody('description')
       .optional()

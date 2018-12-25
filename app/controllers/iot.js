@@ -9,6 +9,20 @@ class IoT {
     network.train(dataset);
   }
 
+  async getSensors(ctx) {
+    try {
+      const sensors = await ctx.models.Sensor.findAll({
+        where: { device_id: null },
+        attributes: ['id', 'name']
+      });
+      return ctx.res.ok({
+        data: sensors
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   getLoggerInfo(ctx) {
     const { heat } = ctx.query;
     const prediction = network.run([heat]);

@@ -4,8 +4,7 @@
     "password": "1061819",
     "database": "tracking_api",
     "host": "127.0.0.1",
-    "dialect": "mysql",
-    "use_env_variable": "CLEARDB_DATABASE_URL"
+    "dialect": "mysql"
   },
   "test": {
     "username": "root",

@@ -16,6 +16,8 @@ router.post(
   IoT.iotAuth
 );
 
+router.get('/sensors', IoT.getSensors);
+
 router.get(
   '/logger',
   validate(ctx => {

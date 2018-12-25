@@ -46,7 +46,7 @@ class Device {
   }
 
   async create(ctx) {
-    const { chart_ids, ...otherBody } = ctx.request.body;
+    const { chart_ids, sensor_id, ...otherBody } = ctx.request.body;
     const charts = [...new Set(chart_ids)];
     try {
       const { data } = jwt.decode(ctx.headers.authorization.split(' ')[1]);
@@ -55,6 +55,12 @@ class Device {
         user_id: data.user_id
       });
       await device.addCharts(charts);
+      const sensor = await ctx.models.Sensor.find({ where: { id: sensor_id } });
+      if (sensor) {
+        sensor.update({
+          device_id: device.id
+        });
+      }
       return ctx.res.created({
         message: 'Device created successfully!'
       });
