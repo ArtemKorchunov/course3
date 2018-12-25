@@ -10,12 +10,12 @@ class OAuth {
     const { name = null, email, password } = ctx.request.body;
     try {
       await ctx.models.User.create({ name, email, password });
-    } catch ({ errors }) {
+    } catch (err) {
       return ctx.res.unprocessableEntity({
-        data: errors.reduce(
+        data: err.errors ? err.errors.reduce(
           (prevItem, item) => ({ ...prevItem, [item.path]: item.message }),
           {}
-        ),
+        ) : err,
         message: 'Unprocessable entity!'
       });
     }
