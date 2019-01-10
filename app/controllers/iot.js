@@ -1,9 +1,20 @@
 // const config = require('../config');
 const uuidv4 = require('uuid/v4');
 const brain = require('brain.js');
+const nodemailer = require('nodemailer');
+const config = require('../config');
 
 const dataset = require('../datasets/temperature.json');
 const network = new brain.NeuralNetwork();
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: config.gmailAuth,
+  host: 'smtp.ethereal.email',
+  port: 587,
+  secure: false
+});
+
 class IoT {
   constructor() {
     network.train(dataset);
@@ -23,9 +34,9 @@ class IoT {
     }
   }
 
-  getLoggerInfo(ctx) {
+  async getLoggerInfo(ctx) {
     const { heat } = ctx.query;
-    const prediction = network.run([heat]);
+    const prediction = network.run([+heat]);
     ctx.io
       .of('/device')
       .to(`device_${ctx.query.identifier}`)
@@ -37,7 +48,37 @@ class IoT {
       ctx.models.TemperatureLevel
     );
     this.analyzeMonthStatistic(+heat, ctx.query.id, ctx.models.MonthStatistic);
+    if (+heat - +prediction[0] * 100 > 10) {
+      try {
+        const sensor = await ctx.models.Sensor.findOne({
+          where: { identifier: ctx.query.identifier },
+          include: [
+            {
+              model: ctx.models.Device,
+              required: true,
+              attributes: ['user_id', 'name']
+            }
+          ]
+        });
+        const user = await ctx.models.User.findById(sensor.Device.user_id);
+        console.log(user);
+        let mailOptions = {
+          from: config.gmailAuth.user,
+          to: user.email,
+          subject: 'Notification',
+          text: `There is danger for your device ${
+            sensor.Device.name
+          }, please keep looking for it state!`
+        };
 
+        transporter.sendMail(mailOptions, function (error, info) {
+          if (error) console.log(error);
+          else console.log('Email sent: ' + info.response);
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
     ctx.res.ok();
   }
 

@@ -25,6 +25,10 @@ const configs = {
       host: 'locahost',
       dialect: 'mysql',
       operatorsAliases: false
+    },
+    gmailAuth: {
+      user: process.env.GMAIL_EMAIL,
+      pass: process.env.GMAIL_PASS
     }
   },
   production: {
