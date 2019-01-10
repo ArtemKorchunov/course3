@@ -61,14 +61,13 @@ class IoT {
           ]
         });
         const user = await ctx.models.User.findById(sensor.Device.user_id);
-        console.log(user);
         let mailOptions = {
           from: config.gmailAuth.user,
           to: user.email,
           subject: 'Notification',
           text: `There is danger for your device ${
             sensor.Device.name
-          }, please keep looking for it state!`
+          }, please keep looking for it state, current temperature is ${heat} ℃ !`
         };
 
         transporter.sendMail(mailOptions, function (error, info) {
