@@ -69,7 +69,7 @@ class IoT {
 
     const monthStatisticResult = await MonthStatistic.findOrCreate({
       where: { sensor_id: id, month_id: +currentMonth + 1 },
-      defaults: { quantity: 1, average: +heat, month_id: +currentMonth }
+      defaults: { quantity: 1, average: +heat, month_id: +currentMonth + 1 }
     });
     if (monthStatisticResult.pop() !== true) {
       const currentStatistic = monthStatisticResult[0];
