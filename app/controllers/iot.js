@@ -17,7 +17,9 @@ const transporter = nodemailer.createTransport({
 
 class IoT {
   constructor() {
-    network.train(dataset);
+    network.train(
+      dataset.map(item => ({ ...item, input: [item.input[0] / 10000] }))
+    );
   }
 
   async getSensors(ctx) {
@@ -35,49 +37,24 @@ class IoT {
   }
 
   async getLoggerInfo(ctx) {
-    const { heat } = ctx.query;
-    const prediction = network.run([+heat]);
+    const { heat, identifier, id } = ctx.query;
+    const convertedHeat = +heat;
+    const prediction = network.run([convertedHeat / 10000]);
+
     ctx.io
       .of('/device')
-      .to(`device_${ctx.query.identifier}`)
+      .to(`device_${identifier}`)
       .emit('payload', { heat, prediction });
 
     this.analyzeTemperatureLevel(
-      +heat,
-      ctx.query.id,
+      convertedHeat,
+      id,
       ctx.models.TemperatureLevel
     );
-    this.analyzeMonthStatistic(+heat, ctx.query.id, ctx.models.MonthStatistic);
-    if (+heat - +prediction[0] * 100 > 10) {
-      try {
-        const sensor = await ctx.models.Sensor.findOne({
-          where: { identifier: ctx.query.identifier },
-          include: [
-            {
-              model: ctx.models.Device,
-              required: true,
-              attributes: ['user_id', 'name']
-            }
-          ]
-        });
-        const user = await ctx.models.User.findById(sensor.Device.user_id);
-        let mailOptions = {
-          from: config.gmailAuth.user,
-          to: user.email,
-          subject: 'Notification',
-          text: `There is danger for your device ${
-            sensor.Device.name
-          }, please keep looking for it state, current temperature is ${heat} ℃ !`
-        };
+    this.analyzeMonthStatistic(convertedHeat, id, ctx.models.MonthStatistic);
+    if (prediction[0] < 0.5)
+      this.sendEmailNotification(ctx.models, identifier, convertedHeat);
 
-        transporter.sendMail(mailOptions, function (error, info) {
-          if (error) console.log(error);
-          else console.log('Email sent: ' + info.response);
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    }
     ctx.res.ok();
   }
 
@@ -156,6 +133,37 @@ class IoT {
         ),
         message: 'Unprocessable entity!'
       });
+    }
+  }
+
+  async sendEmailNotification(models, identifier, heat) {
+    try {
+      const sensor = await models.Sensor.findOne({
+        where: { identifier },
+        include: [
+          {
+            model: models.Device,
+            required: true,
+            attributes: ['user_id', 'name']
+          }
+        ]
+      });
+      const user = await models.User.findById(sensor.Device.user_id);
+      const mailOptions = {
+        from: config.gmailAuth.user,
+        to: user.email,
+        subject: 'Notification',
+        text: `There is danger for your device ${
+          sensor.Device.name
+        }, please keep looking for it state, current temperature is ${heat} ℃ !`
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) console.log(error);
+        else console.log('Email sent: ' + info.response);
+      });
+    } catch (err) {
+      console.log(err);
     }
   }
 }
