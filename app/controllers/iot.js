@@ -52,7 +52,7 @@ class IoT {
       ctx.models.TemperatureLevel
     );
     this.analyzeMonthStatistic(convertedHeat, id, ctx.models.MonthStatistic);
-    if (prediction[0] < 0.5)
+    if (prediction[0] < 0.55)
       this.sendEmailNotification(ctx.models, identifier, convertedHeat);
 
     ctx.res.ok();
