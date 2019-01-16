@@ -40,6 +40,10 @@
     "output": [0]
   },
   {
+    "input": [28],
+    "output": [0]
+  },
+  {
     "input": [30],
     "output": [0]
   },
