@@ -16,6 +16,7 @@ const logger = require('./logger');
 const requestId = require('./middlewares/requestId');
 const responseHandler = require('./middlewares/responseHandler');
 const DeviceSocket = require('./controllers/deviceSocket');
+const AccountSocket = require('./controllers/accountSocket');
 
 const oauth = require('./routes/oauth');
 const router = require('./routes/general');
@@ -38,12 +39,21 @@ require('koa-validate')(app);
 app.proxy = true;
 app.use(cors());
 
-// Create Namespace for socket
+// Create Namespace for socket device
 const nsp = io.of('/device');
 const DeviceInstance = DeviceSocket(io, nsp);
 DeviceInstance.connect = DeviceInstance.connect.bind(DeviceInstance);
 
 nsp.on('connection', DeviceInstance.connect);
+//--------------------------------------------
+
+// Create Namespace for socket account
+const nspAccount = io.of('/account');
+const AccountInstance = AccountSocket(io, nspAccount);
+AccountInstance.connect = AccountInstance.connect.bind(AccountInstance);
+
+nspAccount.on('connection', AccountInstance.connect);
+//----------------------------------------------
 
 // Middleware below this line is only reached if JWT token is valid
 // unless the URL starts with '/public'

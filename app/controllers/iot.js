@@ -52,8 +52,8 @@ class IoT {
       ctx.models.TemperatureLevel
     );
     this.analyzeMonthStatistic(convertedHeat, id, ctx.models.MonthStatistic);
-    if (prediction[0] < 0.55)
-      this.sendEmailNotification(ctx.models, identifier, convertedHeat);
+    if (prediction[0] < 0.559)
+      this.sendNotification(ctx.models, identifier, convertedHeat, ctx);
 
     ctx.res.ok();
   }
@@ -136,7 +136,7 @@ class IoT {
     }
   }
 
-  async sendEmailNotification(models, identifier, heat) {
+  async sendNotification(models, identifier, heat, ctx) {
     try {
       const sensor = await models.Sensor.findOne({
         where: { identifier },
@@ -149,22 +149,34 @@ class IoT {
         ]
       });
       const user = await models.User.findById(sensor.Device.user_id);
-      const mailOptions = {
-        from: config.gmailAuth.user,
-        to: user.email,
-        subject: 'Notification',
-        text: `There is danger for your device ${
-          sensor.Device.name
-        }, please keep looking for it state, current temperature is ${heat} ℃ !`
-      };
-
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) console.log(error);
-        else console.log('Email sent: ' + info.response);
-      });
+      this.sendEmailNotification(user, sensor, heat);
+      this.sendMobileNotification(user.id, heat, ctx);
     } catch (err) {
       console.log(err);
     }
+  }
+
+  sendEmailNotification(user, sensor, heat) {
+    const mailOptions = {
+      from: config.gmailAuth.user,
+      to: user.email,
+      subject: 'Notification',
+      text: `There is danger for your device ${
+        sensor.Device.name
+      }, please keep looking for it state, current temperature is ${heat} ℃ !`
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) console.log(error);
+      else console.log('Email sent: ' + info.response);
+    });
+  }
+
+  sendMobileNotification(id, heat, ctx) {
+    ctx.io
+      .of('/account')
+      .to(`account_${id}`)
+      .emit('payload', { heat });
   }
 }
 
