@@ -99,7 +99,7 @@ function onError(err, ctx) {
 app.on('error', onError);
 // Start server
 if (!module.parent) {
-  const server = http.listen(config.port, () => {
+  http.listen(config.port, () => {
     logger.info(
       { event: 'execute' },
       `API server listening on ${config.host}:${config.port}, in ${config.env}`

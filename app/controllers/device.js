@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config');
 
 class Device {
-  constructor() {}
+  constructor() { }
 
   async get(ctx) {
     const {

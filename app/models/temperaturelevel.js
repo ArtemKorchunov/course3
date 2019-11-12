@@ -9,6 +9,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  TemperatureLevel.associate = function (models) {};
+  TemperatureLevel.associate = function () { };
   return TemperatureLevel;
 };
